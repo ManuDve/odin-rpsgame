@@ -1,28 +1,41 @@
 // Función para generar la jugada de la computadora
 function getComputerChoice() {
-    // inicializa una variable int
+    
     // genera un numero aleatorio entre 1 a 3
     let randomNumber = Math.floor(Math.random() * 3)+1;
-    // asigna un string al numero
-    // retorna el string
+    // asigna un string al numero y lo retorna
     if (randomNumber === 1){
-        return "Piedra";
+        return "piedra";
     } else if (randomNumber === 2) {
-        return "Papel";
+        return "papel";
     } else {
-        return "Tijera";
+        return "tijera";
     }
 }
 
 // Valor inicial de los puntajes
 
-let playerPoints = 0;
-let cpuPoints = 0;
+let playerPoint = 0;
+let cpuPoint = 0;
 
 // Función que muestra el puntaje
 
-function showScore(){
-    return console.log("El puntaje es (Jugador) " + playerPoints + " a " + cpuPoints + " (CPU)"); 
+function addPlayerPoints() {
+    return playerPoint++;
+}
+
+function addCpuPoints() {
+    return cpuPoint++;  
+}
+
+// Muestra el resultado
+function finalScore(){
+    if (playerPoint>cpuPoint && playerPoint == 5) {
+        score.textContent = `¡Ganaste! con un puntaje de ${playerPoint} a ${cpuPoint}`;
+    } else if (playerPoint<cpuPoint && cpuPoint == 5){
+        score.textContent = `¡Perdiste! con un puntaje de ${playerPoint} a ${cpuPoint}`
+    }
+    
 }
 
 //Función para una ronda entre el jugador y la computadora
@@ -37,31 +50,31 @@ function playRound(playerSelection, computerSelection) {
         // PC elige Papel
         while (computerSelection == "papel") {
             if (playerSelection == "tijera") {
-                playerPoints++;
-                return "Ganaste! Tijera vence a Papel";
+                addPlayerPoints();
+                return "¡Ganaste! Tijera vence a Papel";
             } else {
-                cpuPoints++;
-                return "Pierdes! Papel vence a Piedra";
+                addCpuPoints();
+                return "¡Pierdes! Papel vence a Piedra";
             }
         }
         // PC elige Piedra
         while (computerSelection == "piedra") {
             if (playerSelection == "papel") {
-                playerPoints++;
-                return "Ganaste! Papel vence a Piedra";
+                addPlayerPoints();
+                return "¡Ganaste! Papel vence a Piedra";
             } else {
-                cpuPoints++;
-                return "Pierdes! Piedra vence a Tijera";
+                addCpuPoints();
+                return "¡Pierdes! Piedra vence a Tijera";
             }
         }
         // PC elige Tijera
         while (computerSelection == "tijera") {
             if (playerSelection == "piedra") {
-                playerPoints++;
-                return "Ganaste! Piedra vence a Tijera";
+                addPlayerPoints();
+                return "¡Ganaste! Piedra vence a Tijera";
             } else {
-                cpuPoints++;
-                return "Pierdes! Tijera vence a Papel";
+                addCpuPoints();
+                return "¡Pierdes! Tijera vence a Papel";
             }
         }
 
@@ -69,28 +82,31 @@ function playRound(playerSelection, computerSelection) {
     
 }
 
-// Función de juego
+// Eventos
 
-function game() {
+const piedra = document.querySelector(".piedra");
+const papel = document.querySelector(".papel");
+const tijera = document.querySelector(".tijera");
+const resultados = document.querySelector("#resultados");
+const score = document.querySelector(".score");
+
+piedra.addEventListener("click", ()=> {
+    resultados.textContent = playRound("piedra", getComputerChoice());
+    score.textContent = "Jugador: " + playerPoint + " CPU: " + cpuPoint;
+    finalScore();
+})
+
+papel.addEventListener("click", ()=> {
+    resultados.textContent = playRound("papel", getComputerChoice());
+    score.textContent = "Jugador: " + playerPoint + " CPU: " + cpuPoint;
+    finalScore();
     
-    //debe jugar una ronda al mejor de 3
-    while (playerPoints < 3 && cpuPoints < 3) {
+})
 
-        // define las variables y las convierte en minusculas
-        let computerSelection = (getComputerChoice()).toLowerCase();
-        let playerSelection = (prompt("Elige tu opción: Piedra, Papel o Tijera")).toLowerCase();
-        // muestra por consola los returns de la funcion playRound
-        console.log(playRound(playerSelection, computerSelection));
-        showScore();
-    }
-    if (playerPoints == 3) {
-        return "¡¡Ganaste el juego!!";
-    } else {
-        return "¡¡Perdiste el juego wuajaja!!";
-    }
-    
-}
+tijera.addEventListener("click", ()=> {
+    resultados.textContent = playRound("tijera", getComputerChoice());
+    score.textContent = "Jugador: " + playerPoint + " CPU: " + cpuPoint;
+    finalScore();
+})
 
-// Inicializa el juego
 
-console.log(game());
